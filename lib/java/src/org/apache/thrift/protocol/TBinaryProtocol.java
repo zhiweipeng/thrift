@@ -345,6 +345,10 @@ public class TBinaryProtocol extends TProtocol {
   public int readI32() throws TException {
     byte[] buf = inoutTemp;
     int off = 0;
+    /*
+    This matches the Python implementation of TBinaryProtocol, which directly reads 4 bytes
+    https://github.com/apache/thrift/blob/master/lib/py/src/protocol/TBinaryProtocol.py#L216-L219
+     */
     readAll(inoutTemp, 0, 4);
     return
       ((buf[off] & 0xff) << 24) |
