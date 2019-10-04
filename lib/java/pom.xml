@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.thrift</groupId>
     <artifactId>libthrift</artifactId>
-    <version>0.13.1.1-SNAPSHOT</version>
+    <version>0.13.1.2-SNAPSHOT</version>
     <name>Apache Thrift</name>
     <description>Thrift is a software framework for scalable cross-language services development.</description>
     <url>http://thrift.apache.org</url>
