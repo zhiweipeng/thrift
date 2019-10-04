@@ -3,9 +3,9 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.apache.thrift</groupId>
+    <groupId>com.carta</groupId>
     <artifactId>libthrift</artifactId>
-    <version>0.13.2.0</version>
+    <version>0.1.0</version>
     <name>Apache Thrift</name>
     <description>Thrift is a software framework for scalable cross-language services development.</description>
     <url>http://thrift.apache.org</url>
