@@ -28,7 +28,6 @@
         <connection>scm:git:git@github.com:zhiweipeng/thrift.git</connection>
         <developerConnection>scm:git:git@github.com:zhiweipeng/thrift.git</developerConnection>
         <url>scm:git:git@github.com:zhiweipeng/thrift.git</url>
-      <tag>libthrift-0.1.1</tag>
   </scm>
     <dependencies>
         <dependency>
