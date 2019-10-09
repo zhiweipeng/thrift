@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.carta</groupId>
     <artifactId>libthrift</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>Apache Thrift</name>
     <description>Thrift is a software framework for scalable cross-language services development.</description>
     <url>http://thrift.apache.org</url>
@@ -25,9 +25,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/apache/thrift.git</connection>
-        <developerConnection>scm:git:git@github.com:apache/thrift.git</developerConnection>
-        <url>https://github.com/apache/thrift</url>
+        <connection>scm:git:git@github.com:zhiweipeng/thrift.git</connection>
+        <developerConnection>scm:git:git@github.com:zhiweipeng/thrift.git</developerConnection>
+        <url>scm:git:git@github.com:zhiweipeng/thrift.git</url>
       <tag>libthrift-0.1.1</tag>
   </scm>
     <dependencies>
