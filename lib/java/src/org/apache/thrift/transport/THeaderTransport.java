@@ -373,7 +373,7 @@ public class THeaderTransport extends TTransport {
                 flags = version & HEADER_FLAGS_MASK;
                 // read seqId
                 seqId = decodeWord(buff, 4);
-                int headerSize = decodeShort(buff, 8);
+                int headerSize = decodeWord(buff, 8);
 
                 readHeaderFormat(headerSize, buff);
             } else {
@@ -443,7 +443,7 @@ public class THeaderTransport extends TTransport {
 
     private void readHeaderFormat(int headerSize, byte[] buff) throws TTransportException {
         ByteBuffer frame = ByteBuffer.wrap(buff);
-        frame.position(10); // Advance past version, flags, seqid
+        frame.position(12); // Advance past version, flags, seqid
 
         headerSize = headerSize * 4;
         int endHeader = headerSize + frame.position();
@@ -707,7 +707,7 @@ public class THeaderTransport extends TTransport {
             ByteBuffer infoData1 = flushInfoHeaders(Infos.INFO_PKEYVALUE, writePersistentHeaders);
             ByteBuffer infoData2 = flushInfoHeaders(Infos.INFO_KEYVALUE, writeHeaders);
 
-            ByteBuffer headerData = ByteBuffer.allocate(10);
+            ByteBuffer headerData = ByteBuffer.allocate(12);
             writeVarint(headerData, protoId);
             writeVarint(headerData, numTransforms);
             headerData.limit(headerData.position());
@@ -723,14 +723,14 @@ public class THeaderTransport extends TTransport {
 
             // Allocate buffer for the headers.
             // 14 bytes for sz, magic , flags , seqId , headerSize
-            ByteBuffer out = ByteBuffer.allocate(headerSize + 14);
+            ByteBuffer out = ByteBuffer.allocate(headerSize + 16);
 
             // See thrift/doc/HeaderFormat.txt for more info on wire format
-            encodeInt(out, 10 + headerSize + frame.remaining());
+            encodeInt(out, 12 + headerSize + frame.remaining());
             encodeShort(out, HEADER_MAGIC >> 16);
             encodeShort(out, flags);
             encodeInt(out, seqId);
-            encodeShort(out, headerSize / 4);
+            encodeInt(out, headerSize / 4);
 
             out.put(headerData);
             out.put(transformData);
