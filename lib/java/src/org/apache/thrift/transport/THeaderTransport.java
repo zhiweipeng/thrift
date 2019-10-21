@@ -707,7 +707,7 @@ public class THeaderTransport extends TTransport {
             ByteBuffer infoData1 = flushInfoHeaders(Infos.INFO_PKEYVALUE, writePersistentHeaders);
             ByteBuffer infoData2 = flushInfoHeaders(Infos.INFO_KEYVALUE, writeHeaders);
 
-            ByteBuffer headerData = ByteBuffer.allocate(12);
+            ByteBuffer headerData = ByteBuffer.allocate(10);
             writeVarint(headerData, protoId);
             writeVarint(headerData, numTransforms);
             headerData.limit(headerData.position());
