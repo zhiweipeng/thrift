@@ -376,6 +376,7 @@ public class THeaderTransport extends TTransport {
                 /* Read length of the header.
                  * We are using 4 bytes to store the header length instead of 2, to deal with
                  * headers larger than 65535 bytes
+                 * Related: https://github.com/carta/circus/pull/123
                  */
                 int headerSize = decodeWord(buff, 8);
 
@@ -734,7 +735,7 @@ public class THeaderTransport extends TTransport {
               2 bytes for header magic
             + 2 bytes for flags
             + 4 bytes for sequence id
-            + 4 bytes for header length (instead of 2 bytes)
+            + 4 bytes for header length (instead of 2 bytes. Related: https://github.com/carta/circus/pull/123)
             = 12
              */
             encodeInt(out, 12 + headerSize + frame.remaining());
@@ -743,6 +744,7 @@ public class THeaderTransport extends TTransport {
             encodeInt(out, seqId);
             /* We are using 4 bytes to store the header length instead of 2, to deal with
              * headers larger than 65535 bytes
+             * Related: https://github.com/carta/circus/pull/123
              */
             encodeInt(out, headerSize / 4);
 
