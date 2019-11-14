@@ -346,4 +346,16 @@ public class THeaderProtocol extends TProtocol {
     public ByteBuffer readBinary() throws TException {
         return proto.readBinary();
     }
+
+    public void setHeader(String key, String value) {
+      ((THeaderTransport) getTransport()).setHeader(key, value);
+    }
+
+    public Map<String, String> getHeader() {
+      return ((THeaderTransport) getTransport()).getHeaders();
+    }
+
+    public void clearHeader() {
+      ((THeaderTransport) getTransport()).clearHeaders();
+    }
 }
