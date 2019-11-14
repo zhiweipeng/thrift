@@ -351,11 +351,11 @@ public class THeaderProtocol extends TProtocol {
       ((THeaderTransport) getTransport()).setHeader(key, value);
     }
 
-    public Map<String, String> getHeader() {
+    public Map<String, String> getHeaders() {
       return ((THeaderTransport) getTransport()).getHeaders();
     }
 
-    public void clearHeader() {
+    public void clearHeaders() {
       ((THeaderTransport) getTransport()).clearHeaders();
     }
 }
