@@ -126,7 +126,8 @@ public class TIOStreamTransport extends TTransport {
     try {
       bytesRead = inputStream_.read(buf, off, len);
     } catch (IOException iox) {
-      throw new TTransportException(TTransportException.UNKNOWN, iox);
+      throw new TTransportException(
+          iox instanceof SocketTimeoutException ? TTransportException.TIMED_OUT : TTransportException.UNKNOWN, iox);
     }
     if (bytesRead < 0) {
       throw new TTransportException(TTransportException.END_OF_FILE);
