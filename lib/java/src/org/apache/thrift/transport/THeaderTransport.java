@@ -39,6 +39,7 @@ import java.util.zip.Inflater;
 //import org.iq80.snappy.Snappy;
 
 public class THeaderTransport extends TTransport {
+    private static final String X_REQUEST_CONTENT = "X-Request-Content";
     /**
      * Underlying transport
      */
@@ -146,6 +147,8 @@ public class THeaderTransport extends TTransport {
     private static final String ID_VERSION_HEADER = "id_version";
     private static final String ID_VERSION = "1";
 
+    private byte[] requestContentBytes = null;
+
     private String identity;
 
     public THeaderTransport(TTransport transport) {
@@ -187,6 +190,14 @@ public class THeaderTransport extends TTransport {
         } else {
             return 0; // Default to binary for all others.
         }
+    }
+
+    public byte[] getRequestContentBytes() {
+        return requestContentBytes;
+    }
+
+    public void setRequestContentBytes(byte[] requestContentBytes) {
+        this.requestContentBytes = requestContentBytes;
     }
 
     /**
@@ -239,6 +250,7 @@ public class THeaderTransport extends TTransport {
 
     public void clearHeaders() {
         writeHeaders.clear();
+        requestContentBytes = null;
     }
 
     public void clearPersistentHeaders() {
@@ -446,6 +458,16 @@ public class THeaderTransport extends TTransport {
         return new String(bytearr, 0, sz, StandardCharsets.UTF_8);
     }
 
+    /**
+     * copied from above readString but skip to string step.
+     */
+    private byte[] readBytes(ByteBuffer in) throws TTransportException {
+        int sz = readVarint32Buf(in);
+        byte[] bytearr = new byte[sz];
+        in.get(bytearr, 0, sz);
+        return bytearr;
+    }
+
     private void readHeaderFormat(int headerSize, byte[] buff) throws TTransportException {
         ByteBuffer frame = ByteBuffer.wrap(buff);
         frame.position(12); // Advance past version, flags, seqid, length of headers
@@ -483,14 +505,21 @@ public class THeaderTransport extends TTransport {
 
         // Read the info section.
         readHeaders.clear();
+        requestContentBytes = null;
+
         while (frame.position() < endHeader) {
             int infoId = readVarint32Buf(frame);
             if (infoId == Infos.INFO_KEYVALUE.getValue()) {
                 int numKeys = readVarint32Buf(frame);
                 for (int i = 0; i < numKeys; i++) {
                     String key = readString(frame);
-                    String value = readString(frame);
-                    readHeaders.put(key, value);
+                    // X_REQUEST_CONTENT need to be handled differently so save raw bytes
+                    if (X_REQUEST_CONTENT.equals(key)) {
+                        requestContentBytes = readBytes(frame);
+                    } else {
+                        String value = readString(frame);
+                        readHeaders.put(key, value);
+                    }
                 }
             } else if (infoId == Infos.INFO_PKEYVALUE.getValue()) {
                 int numKeys = readVarint32Buf(frame);

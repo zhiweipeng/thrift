@@ -358,4 +358,12 @@ public class THeaderProtocol extends TProtocol {
     public void clearHeaders() {
       ((THeaderTransport) getTransport()).clearHeaders();
     }
+
+    public byte[] getRequestContentBytes() {
+        return ((THeaderTransport) trans_).getRequestContentBytes();
+    }
+
+    public void setRequestContentBytes(byte[] requestContentBytes) {
+        ((THeaderTransport) trans_).setRequestContentBytes(requestContentBytes);
+    }
 }
