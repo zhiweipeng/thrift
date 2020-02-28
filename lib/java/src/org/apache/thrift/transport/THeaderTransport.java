@@ -451,6 +451,11 @@ public class THeaderTransport extends TTransport {
         out.put(ByteBuffer.wrap(bytes));
     }
 
+    private void writeBytes(ByteBuffer out, byte[] bytes) {
+        writeVarint(out, bytes.length);
+        out.put(ByteBuffer.wrap(bytes));
+    }
+
     private String readString(ByteBuffer in) throws TTransportException {
         int sz = readVarint32Buf(in);
         byte[] bytearr = new byte[sz];
@@ -633,6 +638,11 @@ public class THeaderTransport extends TTransport {
             len += header.getKey().length();
             len += header.getValue().length();
         }
+        if (requestContentBytes != null) {
+            len += 10; // 5 bytes varint for key size and
+            len += X_REQUEST_CONTENT.length();
+            len += requestContentBytes.length;
+        }
         return len;
     }
 
@@ -644,6 +654,10 @@ public class THeaderTransport extends TTransport {
             for (Map.Entry<String, String> pairs : headers.entrySet()) {
                 writeString(infoData, pairs.getKey());
                 writeString(infoData, pairs.getValue());
+            }
+            if (requestContentBytes != null) {
+                writeString(infoData, X_REQUEST_CONTENT);
+                writeBytes(infoData, requestContentBytes);
             }
             headers.clear();
         }
